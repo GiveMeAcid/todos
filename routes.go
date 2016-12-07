@@ -40,6 +40,7 @@ type Routes []Route
 //	},
 //}
 
+//routes
 var routes = Routes{
 	Route{
 		"GetUser",
