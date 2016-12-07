@@ -11,6 +11,7 @@ func init() {
 	//RepoCreateTodo(Todo{Name: "Host meetup"})
 	//RepoFindTodo(3)
 	CreateNewUser(User{Name: "userlol"})
+	CreateNewUser(User{Name: "user"})
 	CreateNewUser(User{Name: "test", Login: "testlogin", Password: "testpassword", Email: "test@mail.com"})
 }
 
