@@ -13,29 +13,56 @@ type Route struct {
 
 type Routes []Route
 
+//var routes = Routes{
+//	Route{
+//		"Index",
+//		"GET",
+//		"/",
+//		Index,
+//	},
+//	Route{
+//		"TodoIndex",
+//		"GET",
+//		"/todos",
+//		TodoIndex,
+//	},
+//	Route{
+//		"TodoShow",
+//		"GET",
+//		"/todos/{todoId}",
+//		TodoShow,
+//	},
+//	Route{
+//		"TodoCreate",
+//		"POST",
+//		"/todos",
+//		TodoCreate,
+//	},
+//}
+
 var routes = Routes{
 	Route{
-		"Index",
+		"GetUser",
+		"GET",
+		"/users/{userId}",
+		GetUser,
+	},
+	Route{
+		"UpdateUser",
+		"GET",
+		"/users",
+		UpdateUser,
+	},
+	Route{
+		"DeleteUser",
 		"GET",
 		"/",
 		Index,
 	},
 	Route{
-		"TodoIndex",
-		"GET",
-		"/todos",
-		TodoIndex,
-	},
-	Route{
-		"TodoShow",
-		"GET",
-		"/todos/{todoId}",
-		TodoShow,
-	},
-	Route{
-		"TodoCreate",
+		"CreateUser",
 		"POST",
-		"/todos",
-		TodoCreate,
+		"/users",
+		CreateUser,
 	},
 }
