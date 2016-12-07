@@ -87,13 +87,32 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var user User
-	Id := params["Id"]
+	Id := params["id"]
 	fmt.Fprintln(w, "user get:", Id)
-	json.NewEncoder(w).Encode(&user)
+	//json.NewEncoder(w).Encode(&user)
+
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	if err := json.NewEncoder(w).Encode(&user); err != nil {
+		w.WriteHeader(500)
+	}
 }
 
 func GetPeople(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
+	var str string
+	if len(r.URL.RawQuery) > 0 {
+		str = r.URL.Query().Get("name")
+		if str == "" {
+			w.WriteHeader(400)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	if err := json.NewEncoder(w).Encode(users); err != nil {
+		w.WriteHeader(500)
+	}
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {

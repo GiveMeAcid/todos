@@ -45,7 +45,7 @@ var routes = Routes{
 		GetUser,
 	},
 	Route{
-		"UpdatePeople",
+		"GetPeople",
 		"GET",
 		"/users",
 		GetPeople,
