@@ -45,21 +45,27 @@ var routes = Routes{
 		GetUser,
 	},
 	Route{
-		"GetPeople",
+		"GetUsers",
 		"GET",
 		"/users",
-		GetPeople,
+		GetUsers,
 	},
-	//Route{
-	//	"DeleteUser",
-	//	"DELETE",
-	//	"/users/{id}",
-	//	DeleteUser,
-	//},
+	Route{
+		"DeleteUser",
+		"DELETE",
+		"/users/{login}",
+		DeleteUser,
+	},
 	Route{
 		"CreateUser",
 		"POST",
 		"/users/{login}",
 		CreateUser,
+	},
+	Route{
+		"UpdateUser",
+		"PUT",
+		"/users/{login}",
+		UpdateUser,
 	},
 }

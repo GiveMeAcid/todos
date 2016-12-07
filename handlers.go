@@ -59,30 +59,6 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//func GetUser(w http.ResponseWriter, r *http.Request) {
-//	json.NewEncoder(w).Encode(users)
-//}
-
-
-//func UpdateUser(w http.ResponseWriter, r *http.Request) {
-//	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-//	w.WriteHeader(http.StatusOK)
-//
-//	if err := json.NewEncoder(w).Encode(users); err != nil {
-//		panic(err)
-//	}
-//
-//}
-//
-//func CreateUser(w http.ResponseWriter, r *http.Request) {
-//	params := mux.Vars(r)
-//	var user User
-//	_ = json.NewDecoder(r.Body).Decode(&user)
-//	Id := params["id"]
-//	fmt.Fprintln(w, "show user: ", Id)
-//	users = append(users, user)
-//	json.NewEncoder(w).Encode(users)
-//}
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	for _, item := range users {
@@ -94,7 +70,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&User{})
 }
 
-func GetPeople(w http.ResponseWriter, r *http.Request) {
+func GetUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
@@ -107,14 +83,26 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
-//func DeleteUser(w http.ResponseWriter, r *http.Request) {
-//	params := mux.Vars(r)
-//	for index, item := range users {
-//		if item.Login == params["id"] {
-//			users = append(users[:index], users[index+1:]...)
-//			break
-//		}
-//	}
-//	json.NewEncoder(w).Encode(users)
-//}
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	for index, item := range users {
+		if item.Login == params["login"] {
+			users = append(users[:index], users[index+1:]...)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(users)
+}
 
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var user User
+	for index, item := range users {
+		if item.Login == params["login"] {
+			users = append(users[:index], users[index+1:]...)
+			_ = json.NewDecoder(r.Body).Decode(&user)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(users)
+}
