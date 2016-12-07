@@ -41,7 +41,7 @@ var routes = Routes{
 	Route{
 		"GetUser",
 		"GET",
-		"/users/{Id}",
+		"/users/{login}",
 		GetUser,
 	},
 	Route{
@@ -59,7 +59,7 @@ var routes = Routes{
 	Route{
 		"CreateUser",
 		"POST",
-		"/users/{Id}",
+		"/users/{login}",
 		CreateUser,
 	},
 }

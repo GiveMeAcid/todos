@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 var currentId int
+var currentLogin string
 var todos Todos
 var users Users
 
@@ -32,15 +33,14 @@ func RepoCreateTodo(t Todo) Todo{
 }
 
 func CreateNewUser(t User) User{
-	currentId += 1
-	t.Id = currentId
+	t.Login = currentLogin
 	users = append(users, t)
 	return t
 }
 
 func UserFind(id int) User{
 	for _, t := range users {
-		if t.Id == id {
+		if t.Login == currentLogin {
 			return t
 		}
 	}

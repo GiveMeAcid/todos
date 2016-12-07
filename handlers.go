@@ -83,44 +83,26 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 //	users = append(users, user)
 //	json.NewEncoder(w).Encode(users)
 //}
-
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	var user User
-	Id := params["id"]
-	fmt.Fprintln(w, "user get:", Id)
-	//json.NewEncoder(w).Encode(&user)
-
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	if err := json.NewEncoder(w).Encode(&user); err != nil {
-		w.WriteHeader(500)
+	for _, item := range users {
+		if item.Login == params["login"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
 	}
+	json.NewEncoder(w).Encode(&User{})
 }
 
 func GetPeople(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
-	var str string
-	if len(r.URL.RawQuery) > 0 {
-		str = r.URL.Query().Get("name")
-		if str == "" {
-			w.WriteHeader(400)
-			return
-		}
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	if err := json.NewEncoder(w).Encode(users); err != nil {
-		w.WriteHeader(500)
-	}
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var user User
 	_ = json.NewDecoder(r.Body).Decode(&user)
-	Id := params["id"]
-	fmt.Fprintln(w, "user post:", Id)
+	user.Login = params["login"]
 	users = append(users, user)
 	json.NewEncoder(w).Encode(users)
 }
@@ -128,7 +110,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 //func DeleteUser(w http.ResponseWriter, r *http.Request) {
 //	params := mux.Vars(r)
 //	for index, item := range users {
-//		if item.Id == params["id"] {
+//		if item.Login == params["id"] {
 //			users = append(users[:index], users[index+1:]...)
 //			break
 //		}
