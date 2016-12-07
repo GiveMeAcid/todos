@@ -84,30 +84,30 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 //	json.NewEncoder(w).Encode(users)
 //}
 
-func GetUser(w http.ResponseWriter, req *http.Request) {
-	params := mux.Vars(req)
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
 	var user User
 	Id := params["Id"]
 	fmt.Fprintln(w, "user get:", Id)
 	json.NewEncoder(w).Encode(&user)
 }
 
-func GetPeople(w http.ResponseWriter, req *http.Request) {
+func GetPeople(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
-func CreateUser(w http.ResponseWriter, req *http.Request) {
-	params := mux.Vars(req)
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
 	var user User
-	_ = json.NewDecoder(req.Body).Decode(&user)
+	_ = json.NewDecoder(r.Body).Decode(&user)
 	Id := params["id"]
 	fmt.Fprintln(w, "user post:", Id)
 	users = append(users, user)
 	json.NewEncoder(w).Encode(users)
 }
 
-//func DeleteUser(w http.ResponseWriter, req *http.Request) {
-//	params := mux.Vars(req)
+//func DeleteUser(w http.ResponseWriter, r *http.Request) {
+//	params := mux.Vars(r)
 //	for index, item := range users {
 //		if item.Id == params["id"] {
 //			users = append(users[:index], users[index+1:]...)
