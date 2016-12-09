@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"io"
+	"github.com/jinzhu/gorm"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -15,11 +15,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodoIndex(w http.ResponseWriter, r *http.Request) {
-	//todos := Todos{
-	//	To.do{Name: "Write presentation"},
-	//	T.odo{Name: "Host meetup"},
-	//}
-
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
@@ -29,9 +24,17 @@ func TodoIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func TodoShow(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	todoId := vars["todoId"]
-	fmt.Fprintln(w, "Todo show:", todoId)
+
+	//vars := mux.Vars(r)
+	//todoId := vars["Id"]
+	//fmt.Fprintln(w, "Todo show:", todoId)
+
+	t := RepoFindTodo(currentId)
+	w.Header().Set("Content-type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusCreated)
+	if err := json.NewEncoder(w).Encode(t); err != nil {
+		panic(err)
+	}
 }
 
 func TodoCreate(w http.ResponseWriter, r *http.Request) {
@@ -75,12 +78,20 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	var user User
+	var (
+		DB *gorm.DB
+		user User
+		//email = r.PostFormValue("email")
+		password = r.PostFormValue("password")
+		//name = r.PostFormValue("name")
+	)
+	//params := mux.Vars(r)
 	_ = json.NewDecoder(r.Body).Decode(&user)
-	user.Login = params["login"]
+	DB.Where(user).First(&user)
+	user.SetPassword(password)
+	//user.Login = params["login"]
 	users = append(users, user)
-	json.NewEncoder(w).Encode(users)
+	json.NewEncoder(w).Encode(user)
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -95,14 +106,22 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
 	var user User
-	for index, item := range users {
-		if item.Login == params["login"] {
-			users = append(users[:index], users[index+1:]...)
-			_ = json.NewDecoder(r.Body).Decode(&user)
-			break
+	vars := mux.Vars(r)
+	login := vars["login"]
+	for _, p := range users {
+		if p.Login == login {
+			user = p
 		}
 	}
-	json.NewEncoder(w).Encode(users)
+
+	w.Header().Set("Content-Type", "application/json")
+	if user.Login != "" {
+		payload, _ := json.Marshal(user)
+		w.Write([]byte(payload))
+	} else {
+		w.Write([]byte("User Not Found"))
+	}
+	json.NewEncoder(w).Encode(user)
 }
+

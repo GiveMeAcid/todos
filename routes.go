@@ -59,7 +59,7 @@ var routes = Routes{
 	Route{
 		"CreateUser",
 		"POST",
-		"/users/{login}",
+		"/users",
 		CreateUser,
 	},
 	Route{

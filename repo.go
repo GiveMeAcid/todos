@@ -10,7 +10,7 @@ var users Users
 func init() {
 	RepoCreateTodo(Todo{Name: "Write presentation"})
 	RepoCreateTodo(Todo{Name: "Host meetup"})
-	CreateNewUser(User{Name: "userlol"})
+	CreateNewUser(User{Name: "userlol", Login: "testlog"})
 	CreateNewUser(User{Name: "user"})
 	CreateNewUser(User{Name: "test", Login: "testlogin", Password: "testpassword", Email: "test@mail.com"})
 }
@@ -38,9 +38,9 @@ func CreateNewUser(t User) User{
 	return t
 }
 
-func UserFind(id int) User{
+func UserFind(login string) User{
 	for _, t := range users {
-		if t.Login == currentLogin {
+		if t.Login == login {
 			return t
 		}
 	}
